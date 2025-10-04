@@ -30,6 +30,7 @@ ApplicationWindow{
     Settings{
         id: apps
         fileName: u.getPath(4)+'/'+app.title+'.cfg'
+        property real volume: 0.0
         property int currentIndexCbCountries: 0
         property string uUrl: ''
         property string uChannelNom: ''
@@ -174,14 +175,19 @@ ApplicationWindow{
                         height: width/16*9
                         autoLoad: true
                         autoPlay: true
+                        volume: apps.volume
                         //fillMode: VideoOutput.PreserveAspectCrop
                         fillMode: VideoOutput.PreserveAspectFit
                         anchors.centerIn: parent
                         source: apps.uUrl
                         onSourceChanged: {
                            apps.uUrl=miVlc.source
-                            apps.uChannelNom=app.currentJson.names[app.currentJson.urls.indexOf(apps.uUrl)]
-                            apps.uImgIconUrl=app.currentJson.pings[app.currentJson.urls.indexOf(apps.uUrl)]
+                           if(app.currentJson && app.currentJson.names){
+                                apps.uChannelNom=app.currentJson.names[app.currentJson.urls.indexOf(apps.uUrl)]
+                           }
+                           if(app.currentJson && app.currentJson.pings){
+                                apps.uImgIconUrl=app.currentJson.pings[app.currentJson.urls.indexOf(apps.uUrl)]
+                           }
                         }
                         onStatusChanged: {
                             loading.text='Cargando...'
@@ -240,6 +246,25 @@ ApplicationWindow{
                             repeat: true
                             interval: 100
                             onTriggered: parent.font.pixelSize-=2
+                        }
+                    }
+                    Rectangle{
+                        width: app.fs*0.5
+                        height: width
+                        radius: width*0.5
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: miVlc.status===Video.Error?'red':
+                                                           (
+                                                            miVlc.status===Video.Loading?'gray':'green'
+                                                           )
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked:{
+                                let nUrl=miVlc.source
+                                let d = new Date(Date.now())
+                                nUrl+='?r='+d.getTime()
+                                miVlc.source=nUrl
+                            }
                         }
                     }
                 }
@@ -312,6 +337,22 @@ ApplicationWindow{
     Shortcut{
         sequence: 'Esc'
         onActivated: Qt.quit()
+    }
+    Shortcut{
+        sequence: 'Left'
+        onActivated: {
+            if(apps.volume>0.0){
+               apps.volume-=0.1
+            }
+        }
+    }
+    Shortcut{
+        sequence: 'Right'
+        onActivated: {
+            if(apps.volume<1.0){
+               apps.volume+=0.1
+            }
+        }
     }
     Shortcut{
         sequence: 'Down'
