@@ -1,1 +1,1 @@
-i7: Se sube todo desde PC
+i7: Se corrige error de carga de canales.

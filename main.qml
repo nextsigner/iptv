@@ -75,7 +75,7 @@ ApplicationWindow{
 
                         currentIndex: apps.currentIndexCbCountries
                         onCurrentIndexChanged:  {
-                            currentIndexCbCountries=currentIndex
+                            apps.currentIndexCbCountries=currentIndex
                             getIpTvUrls(aCountriesUrls[currentIndex])
                         }
                         //onCurrentTextChanged: updateCat(currentText)
