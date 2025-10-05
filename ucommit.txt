@@ -1,1 +1,1 @@
-i7: Se agregaron canales Bolivianos, Chilenos y Mexicanos.
+i7: Se llega a la version 5.10.5.0
