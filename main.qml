@@ -21,7 +21,7 @@ ApplicationWindow{
     id: app
     visible: true
     visibility: 'Maximized'
-    title: 'CuteTV'
+    title: 'QtIpTV'
     color: 'black'
 
     property int fs:  screen.width*0.02
@@ -35,6 +35,12 @@ ApplicationWindow{
         property string uUrl: ''
         property string uChannelNom: ''
         property string uImgIconUrl: ''
+    }
+    Connections {
+        target: qmlErrorLogger
+        onMessagesChanged: {
+            if(apps.showQmlErrors)ta.text+='Qml: '+qmlErrorLogger.messages[qmlErrorLogger.messages.length-1];
+        }
     }
     UnikQProcess{
         id: uqp
@@ -325,6 +331,15 @@ ApplicationWindow{
         //Canales Peruanos
         aCountriesNoms.push('Perú')
         aUrlsCountries.push('https://iptv-org.github.io/iptv/countries/pe.m3u')
+        //Canales Mexicanos
+        aCountriesNoms.push('México')
+        aUrlsCountries.push('https://iptv-org.github.io/iptv/countries/mx.m3u')
+        //Canales Chilenos
+        aCountriesNoms.push('Chile')
+        aUrlsCountries.push('https://iptv-org.github.io/iptv/countries/cl.m3u')
+        //Canales Chilenos
+        aCountriesNoms.push('Bolivia')
+        aUrlsCountries.push('https://iptv-org.github.io/iptv/countries/bo.m3u')
 
         cbCountries.model=aCountriesNoms
         cbCountries.aCountriesUrls=aUrlsCountries
